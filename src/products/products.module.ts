@@ -12,8 +12,8 @@ import { envs, PRODUCTS_SERVICE_CLIENT } from '../config';
         name: PRODUCTS_SERVICE_CLIENT,
         transport: Transport.TCP,
         options: {
-          host: envs.productsMicroserviceHost,
-          port: envs.productsMicroservicePort,
+          host: envs.productsMSHost,
+          port: envs.productsMSPort,
         },
       },
     ]),

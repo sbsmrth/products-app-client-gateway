@@ -15,6 +15,7 @@ import { catchError } from 'rxjs';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PRODUCTS_SERVICE_CLIENT } from '../config';
+import { PaginationDto } from '../common';
 
 @Controller('products')
 export class ProductsController {
@@ -25,43 +26,39 @@ export class ProductsController {
 
   @Post()
   createProduct(@Body() createProductDto: CreateProductDto) {
-    return this.productsClient.send(
-      { cmd: 'create_product' },
-      createProductDto,
-    );
+    return this.productsClient.send('create_product', createProductDto);
   }
 
   @Get()
   findAllProducts(@Query() paginationDto: PaginationDto) {
-    return this.productsClient.send(
-      { cmd: 'find_all_products' },
-      paginationDto,
-    );
+    return this.productsClient.send('find_all_products', paginationDto);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.productsClient.send({ cmd: 'find_one_product' }, { id }).pipe(
+  findOne(@Param('id') id: string) {
+    return this.productsClient.send('find_one_product', { id }).pipe(
       catchError((err) => {
         throw new RpcException(err);
       }),
     );
+    /*
+    try {
+      // We await for the response from the microservice if we need the product in fact not only as a response
 
-    // try {
+      const product = await firstValueFrom(
+        this.productsClient.send('find_one_product', { id }),
+      );
 
-    //   const product = await firstValueFrom(
-    //     this.productsClient.send({ cmd: 'find_one_product' },{ id })
-    //   );
-    //   return product;
-
-    // } catch (error) {
-    //   throw new RpcException(error);
-    // }
+      return product;
+    } catch (error) {
+      throw new RpcException(error);
+    }
+    */
   }
 
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
-    return this.productsClient.send({ cmd: 'delete_product' }, { id }).pipe(
+    return this.productsClient.send('delete_product', { id }).pipe(
       catchError((err) => {
         throw new RpcException(err);
       }),
@@ -74,13 +71,10 @@ export class ProductsController {
     @Body() updateProductDto: UpdateProductDto,
   ) {
     return this.productsClient
-      .send(
-        { cmd: 'update_product' },
-        {
-          id,
-          ...updateProductDto,
-        },
-      )
+      .send('update_product', {
+        id,
+        ...updateProductDto,
+      })
       .pipe(
         catchError((err) => {
           throw new RpcException(err);
