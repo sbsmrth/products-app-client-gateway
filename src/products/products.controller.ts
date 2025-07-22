@@ -10,15 +10,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { PRODUCTS_SERVICE_CLIENT } from '../config';
 
 @Controller('products')
 export class ProductsController {
   constructor(
-    @Inject(PRODUCT_SERVICE) private readonly productsClient: ClientProxy,
+    @Inject(PRODUCTS_SERVICE_CLIENT)
+    private readonly productsClient: ClientProxy,
   ) {}
 
   @Post()
