@@ -20,7 +20,7 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
       status: (code: number) => { json: (body: any) => void };
     }>();
 
-    const rpcError = exception.getError();
+    const rpcError = exception.getError(); // Not an instance of RcpException in fact
 
     if (
       typeof rpcError === 'object' &&
