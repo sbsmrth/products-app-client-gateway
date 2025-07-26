@@ -11,8 +11,8 @@ import { envs, ORDERS_SERVICE_CLIENT } from '../config';
         name: ORDERS_SERVICE_CLIENT,
         transport: Transport.TCP,
         options: {
-          host: envs.productsMSHost,
-          port: envs.productsMSPort,
+          host: envs.ordersMSHost,
+          port: envs.ordersMSPort,
         },
       },
     ]),
