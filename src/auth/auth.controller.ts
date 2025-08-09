@@ -1,6 +1,7 @@
-import { Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { NATS_SERVICE } from 'src/config';
+import { LoginUserDto, RegisterUserDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -10,13 +11,13 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  registerUser() {
-    return this.natsClient.send('auth.register.user', {});
+  registerUser(@Body() registerUserDto: RegisterUserDto) {
+    return this.natsClient.send('auth.register.user', registerUserDto);
   }
 
   @Post('login')
-  loginUser() {
-    return this.natsClient.send('auth.login.user', {});
+  loginUser(@Body() loginUserDto: LoginUserDto) {
+    return this.natsClient.send('auth.login.user', loginUserDto);
   }
 
   @Post('verify')
